@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My eCommerce Website</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <script src="script.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Welcome to My eCommerce Store</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="cart.html">Cart</a></li>
+        </ul>
+    </nav>
+    <main>
+        <!-- Content will be dynamically loaded based on the current page -->
+    </main>
+    <footer>
+        &copy; 2023 My eCommerce Store. All rights reserved.
+    </footer>
+</body>
+</html>
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+nav {
+    background-color: #555;
+    color: #fff;
+    padding: 10px;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 10px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+main {
+    padding: 20px;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+// script.js
+
+// Products data (Replace with your actual products and prices)
+const products = [
+    { id: 1, name: 'Product 1', price: 10 },
+    { id: 2, name: 'Product 2', price: 15 },
+    { id: 3, name: 'Product 3', price: 20 },
+    { id: 4, name: 'Product 4', price: 25 }
+];
+
+// Cart items
+let cart = [];
+
+// Function to add an item to the cart
+function addToCart(productId) {
+    const product = products.find(p => p.id === productId);
+    if (product) {
+        cart.push(product);
+        console.log('Item added to cart:', product);
+    }
+}
+
+// Function to display the cart items on the cart page
+function displayCart() {
+    const cartContainer = document.querySelector('.cart-container');
+    cartContainer.innerHTML = '';
+
+    if (cart.length === 0) {
+        cartContainer.textContent = 'Your cart is empty.';
+    } else {
+        const cartList = document.createElement('ul');
+        cart.forEach(item => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `${item.name} - $${item.price}`;
+            cartList.appendChild(listItem);
+        });
+        cartContainer.appendChild(cartList);
+    }
+}
+
+// Check the current page and perform necessary actions
+document.addEventListener('DOMContentLoaded', () => {
+    const currentPage = location.pathname.substring(location.pathname.lastIndexOf('/') + 1);
+
+    if (currentPage === 'products.html') {
+        const productList = document.querySelector('.product-list');
+        products.forEach(product => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `${product.name} - $${product.price}`;
+            const addToCartBtn = document.createElement('button');
+            addToCartBtn.textContent = 'Add to Cart';
+            addToCartBtn.addEventListener('click', () => addToCart(product.id));
+            listItem.appendChild(addToCartBtn);
+            productList.appendChild(listItem);
+        });
+    } else if (currentPage === 'cart.html') {
+        displayCart();
+    }
+});
